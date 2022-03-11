@@ -1,15 +1,13 @@
 import "./App.css";
-import { Form, Card, Button } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { useState } from "react";
 import {
   onAuthStateChanged,
   signInWithEmailAndPassword,
   signOut,
-  U,
 } from "firebase/auth";
 import { auth } from "./database";
 import CodePage from "./components/codePage";
-import { useNavigate } from "react-router-dom";
 import React from "react";
 
 function LoginPage() {
@@ -49,8 +47,8 @@ function LoginPage() {
   };
 
   const logout = async () => {
-    const logout = await signOut(auth);
-    console.log("User Logged Out");
+    await signOut(auth);
+    console.log();
     setShowForm(false);
     setLogin(true);
   };

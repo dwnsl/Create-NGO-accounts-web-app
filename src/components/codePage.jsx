@@ -1,6 +1,6 @@
-import { jsonEval } from "@firebase/util";
+
 import React, { Component } from "react";
-import { Form, Card, Button } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { httpsCallable } from "firebase/functions";
 import { functions } from "../database";
 
