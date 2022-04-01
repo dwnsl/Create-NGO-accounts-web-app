@@ -56,7 +56,7 @@ function LoginPage() {
   return (
     <div>
       {showForm ? (
-        <body className="">
+        <body class="text-center">
 
           <CodePage />
           <Button
@@ -85,7 +85,7 @@ function LoginPage() {
                   id="floatingInput"
                   placeholder="name@example.com"
                 />
-                <label for="floatingInput">Username</label>
+                <label for="floatingInput">Email</label>
               </div>
               <div class="form-floating" style={{ marginTop: "12px" }}>
                 <input
