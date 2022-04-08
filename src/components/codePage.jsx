@@ -1,11 +1,13 @@
-
 import React, { Component } from "react";
 import { Button } from "react-bootstrap";
 import { httpsCallable } from "firebase/functions";
 import { functions } from "../database";
+import ClipLoader from "react-spinners/ClipLoader";
 
 class CodePage extends Component {
   state = {
+    loading: false,
+    emptyInput: false,
     phoneNumber: "",
     name: "",
     inputPhone: "",
@@ -19,39 +21,36 @@ class CodePage extends Component {
   fetchApi() {
     console.log(this.state);
 
-    let newObject = {
-      name: this.state.name,
-      phoneNumber: this.state.phoneNumber,
-    };
+    if (this.state.inputName ==="" || this.state.inputPhone ==="") {
+      this.setState({emptyInput: true})
+    } else {
+      this.setState({emptyInput: false})
+      this.setState({ loading: true });
 
-    // console.log(newObject)
+      let newObject = {
+        name: this.state.name,
+        phoneNumber: this.state.phoneNumber,
+      };
 
-    const createReferredRefugee = httpsCallable(
-      functions,
-      "createReferredRefugee"
-    );
-    createReferredRefugee(newObject).then((result) => {
-      console.log(result.data.inviteCode);
-      this.setState({code: result.data.inviteCode})
-      this.setState({ showCode: true });
+      // console.log(newObject)
 
-    });
-    // fetch(
-    //   "https://us-central1-gondola-9b941.cloudfunctions.net/createReferredRefugee",
-    //   {
-    //     method: "POST",
-    //     body: JSON.stringify(newObject),
-    //   }
-    // );
-    //   .then((response) => response.json())
-    //   .then((data) => console.log(data));
+      const createReferredRefugee = httpsCallable(
+        functions,
+        "createReferredRefugee"
+      );
+      createReferredRefugee(newObject).then((result) => {
+        console.log(result.data.inviteCode);
+        this.setState({ loading: false });
+        this.setState({ code: result.data.inviteCode });
+        this.setState({ showCode: true });
+      });
+    }
   }
 
   handleSubmit = () => {
     this.fetchApi();
     console.log(this.state.phoneNumber);
     console.log(this.state.name);
-    
   };
 
   handleGenerateNewCode = () => {
@@ -60,6 +59,8 @@ class CodePage extends Component {
     this.setState({ inputName: "" });
     this.setState({ inputPhone: "" });
     this.setState({ showCode: false });
+    this.setState({emptyInput: false})
+    
   };
 
   render() {
@@ -79,6 +80,7 @@ class CodePage extends Component {
                 onChange={(event) => {
                   this.setState({ name: event.target.value });
                   this.setState({ inputName: event.target.value });
+                  this.setState({ inputChecker1: true });
                 }}
                 value={this.state.inputName}
                 type="Name"
@@ -93,6 +95,7 @@ class CodePage extends Component {
                 onChange={(event) => {
                   this.setState({ phoneNumber: event.target.value });
                   this.setState({ inputPhone: event.target.value });
+                  this.setState({ inputChecker2: true });
                 }}
                 value={this.state.inputPhone}
                 type="Phone Number"
@@ -112,9 +115,18 @@ class CodePage extends Component {
               Submit
             </Button>
           </form>
+          
+          {this.state.loading ? (
+            <div>
+              {" "}
+              <h2>Fetching Code</h2>
+              <ClipLoader />{" "}
+            </div>
+          ) : null}
           {this.state.showCode ? <h1>Code: {this.state.code}</h1> : null}
+          {this.state.emptyInput ? <h2>Name or Number cannot be empty</h2> : null}
+
           <Button
-            // disabled={true}
             style={{ marginTop: "12px", width: "250px" }}
             onClick={this.handleGenerateNewCode}
           >

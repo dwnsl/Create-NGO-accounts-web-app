@@ -15,6 +15,7 @@ function LoginPage() {
   const [loginPassword, setPassword] = useState("");
   const [showForm, setShowForm] = React.useState(false);
   const [showLogin, setLogin] = React.useState(true);
+  const [showError, setError] = React.useState(false);
   // const[loginError, setLoginError] = React.useState(true)
 
   const [user, setUser] = useState({});
@@ -24,6 +25,7 @@ function LoginPage() {
   });
 
   const login = async () => {
+    setError(false)
     let newUser = null;
     try {
       newUser = await signInWithEmailAndPassword(
@@ -32,8 +34,11 @@ function LoginPage() {
         loginPassword
       );
 
+      console.log(newUser)
+
       // console.log(user);
     } catch (error) {
+      setError(true)
       console.log(error.message);
     }
 
@@ -107,6 +112,8 @@ function LoginPage() {
               >
                 Sign in
               </Button>
+              {showError ? <p>Password or Username is incorrect</p> : null}
+
               
             </form>
   
