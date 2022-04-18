@@ -28,6 +28,11 @@ function LoginPage() {
     setError(false)
     let newUser = null;
     try {
+
+      if(loginEmail !=="patrickjsedivy+1@gmail.com"){
+        setError(true)
+
+      }
       newUser = await signInWithEmailAndPassword(
         auth,
         loginEmail,
