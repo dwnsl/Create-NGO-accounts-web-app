@@ -1,5 +1,5 @@
 import { initializeApp,} from "firebase/app";
-import {getAuth,  createUserWithEmailAndPassword} from 'firebase/auth';
+import {getAuth} from 'firebase/auth';
 import { getFunctions } from "firebase/functions";
 import { getFirestore} from "firebase/firestore";
 import 'firebase/functions';
